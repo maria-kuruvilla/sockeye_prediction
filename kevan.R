@@ -111,10 +111,34 @@ merged_by_river
 # → means: 95,000 returning salmon in 2003 were age 1.2 (born in 2000)
 
 
-# Add the env covariates --------------------------------------------------
+# Env covariates --------------------------------------------------
 
 merged_by_river$Fraser
 
+# What climatic and oceanographic indices are currently available, and over what years?
+knitr::kable(pacea_indices)
+
+# To check what date you installed pacea locally on your machine
+pacea_installed()
+
+# Check the data set installed with pacea
+data(package = "pacea")
+
+# Have a look at the first data
+data("pdo", package = "pacea")
+data("ao", package = "pacea")
+data("alpi", package = "pacea")
+
+# Add the env covariates --------------------------------------------------
+
+# Ensure the year column in PDO data is named 'ExpectedReturnYear' for merging
+pdo_data <- pdo
+colnames(pdo_data)[colnames(pdo_data) == "year"] <- "ExpectedReturnYear"
+
+# Compute the mean of pdo per year
+pdo_data_mean <- pdo_data %>% 
+  group_by(ExpectedReturnYear) %>% 
+  summarise(mean = mean(anomaly))
 
 # Vizualize the data ------------------------------------------------------
 
